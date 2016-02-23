@@ -8,12 +8,11 @@ Created on Tue Feb 23 15:44:11 2016
 import argparse
 import threading
 import pyscreenshot
-from skimage import io
 from datetime import datetime
 
 parser = argparse.ArgumentParser(description = 'Screenshot App')
 parser.add_argument('--folder', help='Folder to dump',default="/home/prassanna/Pictures/")
-parser.add_argument('--time', type=int, help='Take screenshot after "T" seconds', default=2, nargs='?')
+parser.add_argument('--time', type=int, help='Take screenshot after "T" seconds', default=0, nargs='?')
 args=parser.parse_args();
 
 
@@ -37,7 +36,7 @@ def caltime(header= "It is "):
 
 def take_screenshot():
     img = pyscreenshot.grab();
-    io.imsave(caltime(args.folder+filename_prefix)+".png",img )    
+    img.save(caltime(args.folder+filename_prefix)+".png")    
     print "Screenshot Taken"
     
 t = threading.Timer(args.time,take_screenshot)
