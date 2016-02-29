@@ -13,6 +13,7 @@ from datetime import datetime
 parser = argparse.ArgumentParser(description = 'Screenshot App')
 parser.add_argument('--folder', help='Folder to dump',default="/home/prassanna/Pictures/")
 parser.add_argument('--time', type=int, help='Take screenshot after "T" seconds', default=0, nargs='?')
+parser.add_argument('--repeat', type=bool, help='Repeat Screenshot every T seconds', default=0, nargs='?')
 args=parser.parse_args();
 
 
@@ -38,6 +39,16 @@ def take_screenshot():
     img = pyscreenshot.grab();
     img.save(caltime(args.folder+filename_prefix)+".png")    
     print "Screenshot Taken"
+
+
+t = threading.Timer(args.time,take_screenshot)    
+if(args.repeat==True):
+    while(True):        
+        t.start();
+        import time
+        time.sleep(args.time)
+        t = threading.Timer(args.time,take_screenshot)    
+        
+else:
+    t.start();
     
-t = threading.Timer(args.time,take_screenshot)
-t.start();
